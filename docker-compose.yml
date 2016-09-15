@@ -1,0 +1,69 @@
+version: '2'
+
+services:
+  slave:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      REDIS: 1
+      REDIS_PORT: 6380
+      ANNOUNCE_PORT: 6380
+      ANNOUNCE_IP: 127.0.0.1
+    network_mode: "service:redis-master"
+    depends_on:
+      - redis-master
+  slave2:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        MASTER_ADDRESS: 127.0.0.1
+        REDIS: 1
+        REDIS_PORT: 6381
+        ANNOUNCE_PORT: 6381
+        ANNOUNCE_IP: 127.0.0.1
+      network_mode: "service:redis-master"
+      depends_on:
+        - redis-master
+  redis-master:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        REDIS: 1
+        MASTER: 1
+  sentinel1:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        SENTINEL: 1
+        SLAVE_COUNT: 2
+      network_mode: "service:redis-master"
+      depends_on:
+        - redis-master
+  sentinel2:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        SENTINEL: 1
+        SLAVE_COUNT: 2
+        ANNOUNCE_PORT: 26380
+        SENTINEL_PORT: 26380
+      network_mode: "service:redis-master"
+      depends_on:
+        - redis-master
+  sentinel3:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      environment:
+        SENTINEL: 1
+        SLAVE_COUNT: 2
+        ANNOUNCE_PORT: 26381
+        SENTINEL_PORT: 26381
+      network_mode: "service:redis-master"
+      depends_on:
+        - redis-master
