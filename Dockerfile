@@ -6,4 +6,5 @@ RUN chmod +x /usr/local/bin/run.sh
 
 ENTRYPOINT [ "bash", "-c" ]
 
+EXPOSE 26379 6379
 CMD ["/usr/local/bin/run.sh"]
