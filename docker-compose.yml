@@ -49,7 +49,7 @@ services:
         dockerfile: Dockerfile
       environment:
         SENTINEL: 1
-        SLAVE_COUNT: 2
+        QUORUM: 2
         ANNOUNCE_PORT: 26380
         SENTINEL_PORT: 26380
       network_mode: "service:redis-master"
