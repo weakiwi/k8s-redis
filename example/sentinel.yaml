@@ -1,0 +1,32 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: redis-sentinel
+  labels:
+    name: redis-sentinel
+    redis-sentinel: "true"
+    role: sentinel
+spec:
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        name: redis-sentinel
+        redis-sentinel: "true"
+        role: sentinel
+    spec:
+      containers:
+      - name: sentinel
+        image: relaxart/kubernetes-redis-cluster:latest
+        env:
+          - name: SENTINEL
+            value: "1"
+          - name: MASTER_IP
+            value: "redis-node1-service"
+          - name: ANNOUNCE_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        ports:
+          - containerPort: 26379
+
