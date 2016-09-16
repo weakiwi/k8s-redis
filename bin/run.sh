@@ -25,8 +25,7 @@ if [ -n "$SENTINEL" ]; then
     fi
 
     redis-sentinel $CONF
-
-elif [ -n "$REDIS" ]; then
+else
     cp /redis/config/redis.conf $CONF
 
     Template port "$REDIS_PORT" 6379 $CONF

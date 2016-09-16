@@ -2,9 +2,8 @@ REDIS KUBERNETES CLUSTER
 ========================
 
 ## How to choose redis or sentinel
-**$SENTINEL** set to 1. Run application as sentinel  
-**$REDIS** set to 1. Run application as redis  
-**$MASTER** set to 1. Run application as redis master. Variable doesn't work without **$REDIS**
+**$SENTINEL** set to 1. Run application as sentinel. If SENTINEL doesn't set, application will be run as Redis server.
+**$MASTER** set to 1. Run application as redis master.
 
 ## Sentinel ENV Variables
 
