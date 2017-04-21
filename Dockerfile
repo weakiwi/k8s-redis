@@ -1,4 +1,4 @@
-FROM redis:3.2.4
+FROM redis:3.2.5
 
 ENV DOCKERIZE_VERSION v0.4.0
 
