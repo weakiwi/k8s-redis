@@ -11,6 +11,8 @@ CONF="/redis/config/config.conf"
 if [ -n "$SENTINEL" ]; then
     cp /redis/config/sentinel.conf $CONF
 
+    dockerize -wait tcp://$MASTER_IP:6379
+
     Template master_name "$MASTER_NAME" mymaster $CONF
     Template master_ip "$MASTER_IP" 127.0.0.1 $CONF
     Template master_port "$MASTER_PORT" 6379 $CONF
