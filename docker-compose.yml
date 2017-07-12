@@ -30,6 +30,9 @@ services:
         dockerfile: Dockerfile
       environment:
         MASTER: 1
+        REDIS_PORT: 6379
+        ANNOUNCE_PORT: 6379
+        ANNOUNCE_IP: 127.0.0.1
   sentinel1:
       build:
         context: .
