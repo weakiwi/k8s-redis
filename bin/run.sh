@@ -32,13 +32,14 @@ else
 
     Template port "$REDIS_PORT" 6379 $CONF
 
+    if [ -n "$ANNOUNCE_IP" ]; then
+        echo "slave-announce-ip $ANNOUNCE_IP" >> $CONF
+    fi
+    if [ -n "$ANNOUNCE_PORT" ]; then
+        echo "slave-announce-port $ANNOUNCE_PORT" >> $CONF
+    fi
+    
     if [ -z "$MASTER" ]; then
-        if [ -n "$ANNOUNCE_IP" ]; then
-            echo "slave-announce-ip $ANNOUNCE_IP" >> $CONF
-        fi
-        if [ -n "$ANNOUNCE_PORT" ]; then
-            echo "slave-announce-port $ANNOUNCE_PORT" >> $CONF
-        fi
         [[ -z "$MASTER_ADDRESS" ]] && MASTER_ADDRESS="127.0.0.1"
         [[ -z "$MASTER_PORT" ]] && MASTER_PORT=6379
         echo "slaveof $MASTER_ADDRESS $MASTER_PORT" >> $CONF
