@@ -22,15 +22,35 @@ if [ -n "$SENTINEL" ]; then
     if [ -n "$ANNOUNCE_IP" ]; then
         echo "sentinel announce-ip $ANNOUNCE_IP" >> $CONF
     fi
+
+    if [ -n "$DOWN_AFTER_MILLISECONDS" ]; then
+        sed -i "s/30000/$DOWN_AFTER_MILLISECONDS/g" $CONF
+    fi
+    if [ -n "$FAILOVER_TIMEOUT" ]; then
+        sed -i "s/180000/$FAILOVER_TIMEOUT/g" $CONF
+    fi
     if [ -n "$ANNOUNCE_PORT" ]; then
         echo "sentinel announce-port $ANNOUNCE_PORT" >> $CONF
     fi
+    if [ -n "$REDIS_AUTH_PASSWORD" ]; then
+        echo "sentinel auth-pass mymaster $REDIS_AUTH_PASSWORD" >> $CONF
+    fi
 
     redis-sentinel $CONF
+
 else
     cp /redis/config/redis.conf $CONF
 
     Template port "$REDIS_PORT" 6379 $CONF
+
+	if [[ -n ${MAXMEMORY} ]]; then
+	        echo "maxmemory ${MAXMEMORY}mb" >> $CONF
+	fi
+	if [ -n "$REDIS_AUTH_PASSWORD" ]; then
+	    echo "masterauth  $REDIS_AUTH_PASSWORD" >> $CONF
+	    echo "requirepass  $REDIS_AUTH_PASSWORD" >> $CONF
+	fi
+
 
     if [ -n "$ANNOUNCE_IP" ]; then
         echo "slave-announce-ip $ANNOUNCE_IP" >> $CONF
